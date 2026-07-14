@@ -1,8 +1,11 @@
 // Good Day Surf Bali — 2026 상반기 매출 · 예약 대시보드
-// 데이터 출처: 사용자 제공 CSV(굿데이서프_예약매출_2026H1) — 임의 생성 데이터. data.js에서 로드.
+// 데이터 출처: Supabase bookings 테이블 (예전엔 data.js 정적 배열이었으나 마이그레이션됨).
 
 (function () {
   'use strict';
+
+  var SUPABASE_URL = 'https://kwramrtbnfqbhggpdosg.supabase.co';
+  var SUPABASE_ANON_KEY = 'sb_publishable_Q7FhKvLYKOtvitr4Jo4K0w_Cnpk1z9R';
 
   var COLORS = {
     primary50: '#E7F1EE',
@@ -759,6 +762,70 @@
     });
   }
 
+  // ---------- 데이터 로드 (Supabase) ----------
+
+  var DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  function fetchBookings() {
+    var url = SUPABASE_URL + '/rest/v1/bookings?select=date,dow,time,type,instructor,spot,channel,nationality,headcount,unit_price,revenue&order=date.asc,time.asc';
+    return fetch(url, {
+      headers: {
+        apikey: SUPABASE_ANON_KEY,
+        Authorization: 'Bearer ' + SUPABASE_ANON_KEY
+      }
+    }).then(function (res) {
+      if (!res.ok) throw new Error('Supabase fetch failed: ' + res.status);
+      return res.json();
+    }).then(function (rows) {
+      return rows.map(function (r) {
+        return {
+          date: r.date,
+          dow: r.dow,
+          time: r.time,
+          type: r.type,
+          instructor: r.instructor,
+          spot: r.spot,
+          channel: r.channel,
+          nationality: r.nationality,
+          headcount: Number(r.headcount),
+          unitPrice: Number(r.unit_price),
+          revenue: Number(r.revenue)
+        };
+      });
+    });
+  }
+
+  // GDS_DAILY 동등물: 예약이 없는 날도 0으로 채워 2026-01-01~06-30 전체 구간을 채운다.
+  function buildDailyFromBookings(bookings) {
+    var byDate = {};
+    bookings.forEach(function (b) {
+      var agg = byDate[b.date];
+      if (!agg) {
+        agg = byDate[b.date] = { bookings: 0, headcount: 0, revenue: 0 };
+      }
+      agg.bookings += 1;
+      agg.headcount += b.headcount;
+      agg.revenue += b.revenue;
+    });
+
+    var daily = [];
+    var cursor = new Date(Date.UTC(2026, 0, 1));
+    var end = new Date(Date.UTC(2026, 5, 30));
+    while (cursor <= end) {
+      var dateStr = cursor.toISOString().slice(0, 10);
+      var agg = byDate[dateStr] || { bookings: 0, headcount: 0, revenue: 0 };
+      daily.push({
+        date: dateStr,
+        dow: DOW_NAMES[cursor.getUTCDay()],
+        bookings: agg.bookings,
+        headcount: agg.headcount,
+        revenue: agg.revenue
+      });
+      cursor.setUTCDate(cursor.getUTCDate() + 1);
+    }
+    return daily;
+  }
+
   // ---------- 전체 렌더 (필터가 모든 차트/스탯/테이블을 함께 스코프) ----------
 
   function render(rangeKey) {
@@ -813,9 +880,24 @@
     });
   }
 
+  function showLoadError(err) {
+    var main = document.querySelector('main.page');
+    var banner = document.createElement('p');
+    banner.textContent = '데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+    banner.style.color = '#B3261E';
+    banner.style.textAlign = 'center';
+    banner.style.padding = '16px';
+    main.insertBefore(banner, main.firstChild);
+    console.error(err);
+  }
+
   function initApp() {
-    initFilters();
-    render('all');
+    fetchBookings().then(function (bookings) {
+      window.GDS_BOOKINGS = bookings;
+      window.GDS_DAILY = buildDailyFromBookings(bookings);
+      initFilters();
+      render('all');
+    }).catch(showLoadError);
   }
 
   document.addEventListener('DOMContentLoaded', initApp);
