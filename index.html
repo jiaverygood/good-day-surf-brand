@@ -21,12 +21,20 @@
 
   <main class="page">
 
-    <!-- 기간 필터: 차트 전체를 한 번에 스코프하는 단일 행 -->
+    <!-- 기간 필터: 차트 전체를 한 번에 스코프하는 단일 행 (모바일에서는 2x2 그리드 + 축약 라벨) -->
     <div class="filter-row" role="group" aria-label="Date range filter">
-      <button class="filter-btn is-active" data-range="all">Full Period (Jan–Jun)</button>
-      <button class="filter-btn" data-range="q1">Q1 · Rainy Season (Jan–Mar)</button>
-      <button class="filter-btn" data-range="q2">Q2 · Dry Season (Apr–Jun)</button>
-      <button class="filter-btn" data-range="last30">June (Last 30 Days)</button>
+      <button class="filter-btn is-active" data-range="all">
+        <span class="label-full">Full Period (Jan–Jun)</span><span class="label-short">Full Period</span>
+      </button>
+      <button class="filter-btn" data-range="q1">
+        <span class="label-full">Q1 · Rainy Season (Jan–Mar)</span><span class="label-short">Q1 · Rainy</span>
+      </button>
+      <button class="filter-btn" data-range="q2">
+        <span class="label-full">Q2 · Dry Season (Apr–Jun)</span><span class="label-short">Q2 · Dry</span>
+      </button>
+      <button class="filter-btn" data-range="last30">
+        <span class="label-full">June (Last 30 Days)</span><span class="label-short">June (30d)</span>
+      </button>
     </div>
 
     <!-- KPI 스탯 타일 -->
