@@ -197,6 +197,113 @@ body {
   background: var(--cream-300);
 }
 
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.logout-btn {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ---------- 로그인 게이트 ---------- */
+
+.auth-gate {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream-50);
+  padding: var(--space-lg);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--cream-300);
+  border: var(--border-cream);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+
+.auth-badge {
+  width: 64px;
+  height: 64px;
+}
+
+.auth-desc {
+  margin: 0;
+  font-size: 13px;
+  color: var(--neutral-400);
+}
+
+.auth-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  height: 44px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.auth-btn:hover {
+  opacity: 0.9;
+}
+
+.auth-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.auth-btn-google {
+  background: var(--neutral-0);
+  color: var(--cocoa-700);
+  border: 1.5px solid var(--neutral-200);
+}
+
+.auth-btn-google .auth-btn-icon {
+  background: var(--cocoa-700);
+  color: var(--neutral-0);
+}
+
+.auth-btn-kakao {
+  background: #FEE500;
+  color: #391B1B;
+  border: none;
+}
+
+.auth-btn-kakao .auth-btn-icon {
+  background: #391B1B;
+  color: #FEE500;
+}
+
+.auth-error {
+  margin: 0;
+  font-size: 12px;
+  color: var(--error-500);
+}
+
 /* ---------- Page layout ---------- */
 
 .page {

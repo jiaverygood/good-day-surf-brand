@@ -7,6 +7,8 @@
   var SUPABASE_URL = 'https://kwramrtbnfqbhggpdosg.supabase.co';
   var SUPABASE_ANON_KEY = 'sb_publishable_Q7FhKvLYKOtvitr4Jo4K0w_Cnpk1z9R';
 
+  var supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   var COLORS = {
     primary50: '#E7F1EE',
     primary100: '#C3DED7',
@@ -900,5 +902,63 @@
     }).catch(showLoadError);
   }
 
-  document.addEventListener('DOMContentLoaded', initApp);
+  // ---------- 로그인 게이트 (Supabase Auth: Google / Kakao) ----------
+
+  var appStarted = false;
+
+  function showAuthGate(errorMessage) {
+    document.getElementById('auth-gate').hidden = false;
+    document.getElementById('app-header').hidden = true;
+    document.getElementById('app-main').hidden = true;
+    var errorEl = document.getElementById('auth-error');
+    if (errorMessage) {
+      errorEl.textContent = errorMessage;
+      errorEl.hidden = false;
+    } else {
+      errorEl.hidden = true;
+    }
+  }
+
+  function showApp() {
+    document.getElementById('auth-gate').hidden = true;
+    document.getElementById('app-header').hidden = false;
+    document.getElementById('app-main').hidden = false;
+    if (!appStarted) {
+      appStarted = true;
+      initApp();
+    }
+  }
+
+  function initAuth() {
+    document.getElementById('google-login-btn').addEventListener('click', function () {
+      supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + window.location.pathname }
+      });
+    });
+
+    document.getElementById('kakao-login-btn').addEventListener('click', function () {
+      supabaseClient.auth.signInWithOAuth({
+        provider: 'kakao',
+        options: { redirectTo: window.location.origin + window.location.pathname }
+      });
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', function () {
+      appStarted = false;
+      supabaseClient.auth.signOut();
+    });
+
+    // onAuthStateChange는 구독 직후 현재 세션 상태(INITIAL_SESSION)로 한 번 즉시 호출된다.
+    supabaseClient.auth.onAuthStateChange(function (event, session) {
+      console.log('[auth debug] event=' + event + ' hasSession=' + !!session + ' url=' + window.location.href);
+      if (session) {
+        showApp();
+      } else {
+        showAuthGate();
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initAuth);
 })();

@@ -8,7 +8,25 @@
 </head>
 <body>
 
-  <header class="topbar">
+  <!-- 로그인 게이트: 인증 전에는 이 화면만 보이고 대시보드는 숨겨진다 -->
+  <div id="auth-gate" class="auth-gate" hidden>
+    <div class="auth-card">
+      <img class="brand-badge auth-badge" src="logo1.png" alt="Good Day Surf logo">
+      <p class="brand-name">Good Day Surf</p>
+      <p class="auth-desc">대시보드는 팀 전용입니다. 로그인해주세요.</p>
+      <button id="google-login-btn" class="auth-btn auth-btn-google" type="button">
+        <span class="auth-btn-icon" aria-hidden="true">G</span>
+        Google로 로그인
+      </button>
+      <button id="kakao-login-btn" class="auth-btn auth-btn-kakao" type="button">
+        <span class="auth-btn-icon" aria-hidden="true">K</span>
+        카카오로 로그인
+      </button>
+      <p id="auth-error" class="auth-error" hidden></p>
+    </div>
+  </div>
+
+  <header class="topbar" id="app-header" hidden>
     <div class="brand">
       <img class="brand-badge" src="logo1.png" alt="Good Day Surf logo">
       <div class="brand-text">
@@ -18,11 +36,14 @@
     </div>
     <div class="topbar-side">
       <p class="brand-meta">Data period: Jan 1 – Jun 30, 2026</p>
-      <a class="voc-link" href="https://voc-ai-assistant.vercel.app" target="_blank" rel="noopener">VOC AI Assistant →</a>
+      <div class="topbar-actions">
+        <a class="voc-link" href="https://voc-ai-assistant.vercel.app" target="_blank" rel="noopener">VOC AI Assistant →</a>
+        <button id="logout-btn" class="voc-link logout-btn" type="button">로그아웃</button>
+      </div>
     </div>
   </header>
 
-  <main class="page">
+  <main class="page" id="app-main" hidden>
 
     <!-- 기간 필터: 차트 전체를 한 번에 스코프하는 단일 행 (모바일에서는 2x2 그리드 + 축약 라벨) -->
     <div class="filter-row" role="group" aria-label="Date range filter">
@@ -178,6 +199,7 @@
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
