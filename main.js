@@ -951,7 +951,6 @@
 
     // onAuthStateChange는 구독 직후 현재 세션 상태(INITIAL_SESSION)로 한 번 즉시 호출된다.
     supabaseClient.auth.onAuthStateChange(function (event, session) {
-      console.log('[auth debug] event=' + event + ' hasSession=' + !!session + ' url=' + window.location.href);
       if (session) {
         showApp();
       } else {
