@@ -171,6 +171,32 @@ body {
   color: var(--neutral-400);
 }
 
+.topbar-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-sm);
+}
+
+.voc-link {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--cocoa-700);
+  color: var(--cocoa-700);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.voc-link:hover {
+  background: var(--cream-300);
+}
+
 /* ---------- Page layout ---------- */
 
 .page {
@@ -436,6 +462,7 @@ td { color: var(--cocoa-700); }
 
 @media (max-width: 640px) {
   .topbar { flex-direction: column; align-items: flex-start; gap: var(--space-sm); }
+  .topbar-side { align-items: flex-start; width: 100%; }
 
   /* 필터 버튼: 좁은 화면에서 한 줄로 안 들어가므로 2x2 그리드 + 축약 라벨로 전환 */
   .filter-row {
