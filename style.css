@@ -307,6 +307,29 @@ body {
   color: var(--error-500);
 }
 
+.auth-divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--neutral-400);
+  font-size: 11px;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--cream-700);
+}
+
+.auth-btn-guest {
+  background: var(--cocoa-700);
+  color: var(--cream-50);
+  border: none;
+}
+
 /* ---------- 예약 결제 (booking.html) ---------- */
 
 .booking-card {

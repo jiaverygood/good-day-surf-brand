@@ -22,6 +22,19 @@
         <span class="auth-btn-icon" aria-hidden="true">K</span>
         카카오로 로그인
       </button>
+
+      <div class="auth-divider"><span>또는</span></div>
+
+      <div class="booking-field">
+        <label class="booking-label" for="guest-id">아이디</label>
+        <input id="guest-id" class="booking-input" type="text" value="guest" autocomplete="username">
+      </div>
+      <div class="booking-field">
+        <label class="booking-label" for="guest-pw">비밀번호</label>
+        <input id="guest-pw" class="booking-input" type="password" value="guest1234" autocomplete="current-password">
+      </div>
+      <button id="guest-login-btn" class="auth-btn auth-btn-guest" type="button">로그인</button>
+
       <p id="auth-error" class="auth-error" hidden></p>
     </div>
   </div>
@@ -37,6 +50,7 @@
     <div class="topbar-side">
       <p class="brand-meta">Data period: Jan 1 – Jun 30, 2026</p>
       <div class="topbar-actions">
+        <a class="voc-link" href="booking.html" target="_blank" rel="noopener">레슨 예약 페이지 →</a>
         <a class="voc-link" href="https://voc-ai-assistant.vercel.app" target="_blank" rel="noopener">VOC AI Assistant →</a>
         <button id="logout-btn" class="voc-link logout-btn" type="button">로그아웃</button>
       </div>

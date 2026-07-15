@@ -902,9 +902,16 @@
     }).catch(showLoadError);
   }
 
-  // ---------- 로그인 게이트 (Supabase Auth: Google / Kakao) ----------
+  // ---------- 로그인 게이트 (Supabase Auth: Google / Kakao + 게스트) ----------
 
   var appStarted = false;
+  var GUEST_ID = 'guest';
+  var GUEST_PW = 'guest1234';
+  var GUEST_SESSION_KEY = 'gds_guest_session';
+
+  function isGuestSession() {
+    return sessionStorage.getItem(GUEST_SESSION_KEY) === 'true';
+  }
 
   function showAuthGate(errorMessage) {
     document.getElementById('auth-gate').hidden = false;
@@ -944,14 +951,26 @@
       });
     });
 
+    document.getElementById('guest-login-btn').addEventListener('click', function () {
+      var id = document.getElementById('guest-id').value.trim();
+      var pw = document.getElementById('guest-pw').value;
+      if (id === GUEST_ID && pw === GUEST_PW) {
+        sessionStorage.setItem(GUEST_SESSION_KEY, 'true');
+        showApp();
+      } else {
+        showAuthGate('아이디 또는 비밀번호가 올바르지 않습니다.');
+      }
+    });
+
     document.getElementById('logout-btn').addEventListener('click', function () {
       appStarted = false;
-      supabaseClient.auth.signOut();
+      sessionStorage.removeItem(GUEST_SESSION_KEY);
+      supabaseClient.auth.signOut().then(function () { showAuthGate(); });
     });
 
     // onAuthStateChange는 구독 직후 현재 세션 상태(INITIAL_SESSION)로 한 번 즉시 호출된다.
     supabaseClient.auth.onAuthStateChange(function (event, session) {
-      if (session) {
+      if (session || isGuestSession()) {
         showApp();
       } else {
         showAuthGate();
