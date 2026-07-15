@@ -26,7 +26,7 @@
     var krwEl = document.getElementById('price-krw');
 
     payBtn.disabled = true;
-    krwEl.textContent = '환율 조회 중...';
+    krwEl.textContent = 'Fetching exchange rate...';
 
     fetch('/api/quote?type=' + encodeURIComponent(f.type) + '&headcount=' + encodeURIComponent(f.headcount))
       .then(function (res) { return res.json(); })
@@ -36,13 +36,13 @@
 
         quotedAmount = data.amountKRW;
         document.getElementById('price-idr').textContent =
-          'Rp ' + data.totalPriceIDR.toLocaleString() + ' (' + f.headcount + '명)';
-        krwEl.textContent = '약 ' + quotedAmount.toLocaleString() + '원 (오늘 환율 기준)';
+          'Rp ' + data.totalPriceIDR.toLocaleString() + ' (' + f.headcount + (f.headcount === '1' ? ' person' : ' people') + ')';
+        krwEl.textContent = 'approx. ₩' + quotedAmount.toLocaleString() + " (today's rate)";
         payBtn.disabled = false;
       })
       .catch(function () {
         if (thisRequestId !== quoteRequestId) return;
-        krwEl.textContent = '환율 조회 실패 — 새로고침 해주세요.';
+        krwEl.textContent = 'Failed to fetch exchange rate — please refresh.';
       });
   }
 
@@ -55,15 +55,15 @@
   function handlePay() {
     var f = fields();
 
-    if (!f.date) { showError('날짜를 선택해주세요.'); return; }
-    if (!f.name || !f.phone) { showError('이름과 연락처를 입력해주세요.'); return; }
-    if (!quotedAmount) { showError('환율 정보를 아직 못 가져왔습니다. 잠시 후 다시 시도해주세요.'); return; }
+    if (!f.date) { showError('Please select a date.'); return; }
+    if (!f.name || !f.phone) { showError('Please enter your name and phone number.'); return; }
+    if (!quotedAmount) { showError('Exchange rate not loaded yet. Please try again shortly.'); return; }
 
     document.getElementById('booking-error').hidden = true;
 
     var toss = TossPayments(TOSS_CLIENT_KEY);
     var orderId = 'lesson-' + Date.now();
-    var orderName = 'Good Day Surf ' + (f.type === 'Private' ? '프라이빗' : '그룹') + ' 레슨 (' + f.headcount + '명)';
+    var orderName = 'Good Day Surf ' + (f.type === 'Private' ? 'Private' : 'Group') + ' Lesson (' + f.headcount + (f.headcount === '1' ? ' person' : ' people') + ')';
 
     var successUrl = window.location.origin + '/booking-success.html'
       + '?type=' + encodeURIComponent(f.type)
@@ -72,6 +72,7 @@
       + '&time=' + encodeURIComponent(f.time)
       + '&spot=' + encodeURIComponent(f.spot);
 
+    // '카드'는 토스 SDK가 요구하는 결제수단 식별자 리터럴이라 번역하면 안 됨
     toss.requestPayment('카드', {
       amount: quotedAmount,
       orderId: orderId,
@@ -81,7 +82,7 @@
       failUrl: window.location.origin + '/booking.html'
     }).catch(function (err) {
       if (err.code !== 'USER_CANCEL') {
-        showError(err.message || '결제 요청 중 오류가 발생했습니다.');
+        showError(err.message || 'An error occurred while requesting payment.');
       }
     });
   }

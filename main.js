@@ -885,7 +885,7 @@
   function showLoadError(err) {
     var main = document.querySelector('main.page');
     var banner = document.createElement('p');
-    banner.textContent = '데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+    banner.textContent = 'Failed to load data. Please try again shortly.';
     banner.style.color = '#B3261E';
     banner.style.textAlign = 'center';
     banner.style.padding = '16px';
@@ -958,7 +958,7 @@
         sessionStorage.setItem(GUEST_SESSION_KEY, 'true');
         showApp();
       } else {
-        showAuthGate('아이디 또는 비밀번호가 올바르지 않습니다.');
+        showAuthGate('Incorrect username or password.');
       }
     });
 

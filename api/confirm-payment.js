@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
 
   var secretKey = process.env.TOSS_SECRET_KEY;
   if (!secretKey) {
-    res.status(500).json({ error: '결제 서버 설정이 완료되지 않았습니다 (TOSS_SECRET_KEY 미설정).' });
+    res.status(500).json({ error: 'Payment server is not configured (TOSS_SECRET_KEY missing).' });
     return;
   }
 
@@ -21,7 +21,7 @@ module.exports = async function handler(req, res) {
   var headcount = body.headcount;
 
   if (!paymentKey || !orderId || !amount || !quote.LESSON_PRICES_IDR[type]) {
-    res.status(400).json({ error: '필수 결제 정보가 없습니다.' });
+    res.status(400).json({ error: 'Missing required payment information.' });
     return;
   }
 
@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
     var expected = quote.computeAmountKRW(type, headcount, rate);
     var diffRatio = Math.abs(amount - expected) / expected;
     if (diffRatio > 0.1) {
-      res.status(400).json({ error: '결제 금액이 올바르지 않습니다.' });
+      res.status(400).json({ error: 'Invalid payment amount.' });
       return;
     }
 
@@ -47,12 +47,12 @@ module.exports = async function handler(req, res) {
     var tossData = await tossRes.json();
 
     if (!tossRes.ok) {
-      res.status(tossRes.status).json({ error: tossData.message || '결제 승인 실패' });
+      res.status(tossRes.status).json({ error: tossData.message || 'Payment confirmation failed' });
       return;
     }
 
     res.status(200).json({ success: true, payment: tossData });
   } catch (err) {
-    res.status(500).json({ error: '결제 승인 중 오류가 발생했습니다.' });
+    res.status(500).json({ error: 'An error occurred while confirming payment.' });
   }
 };

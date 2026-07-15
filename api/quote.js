@@ -31,7 +31,7 @@ module.exports = async function handler(req, res) {
   var headcount = normalizeHeadcount(query.headcount);
 
   if (!LESSON_PRICES_IDR[type]) {
-    res.status(400).json({ error: '잘못된 레슨 종류입니다.' });
+    res.status(400).json({ error: 'Invalid lesson type.' });
     return;
   }
 
@@ -48,7 +48,7 @@ module.exports = async function handler(req, res) {
       fetchedAt: new Date().toISOString()
     });
   } catch (err) {
-    res.status(500).json({ error: '환율 정보를 가져오지 못했습니다.' });
+    res.status(500).json({ error: 'Failed to fetch exchange rate.' });
   }
 };
 

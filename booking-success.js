@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  var TYPE_LABEL = { Group: '그룹 레슨', Private: '프라이빗 레슨' };
+  var TYPE_LABEL = { Group: 'Group Lesson', Private: 'Private Lesson' };
 
   function getParam(name) {
     return new URLSearchParams(window.location.search).get(name);
@@ -21,7 +21,7 @@
     var summaryEl = document.getElementById('result-summary');
 
     if (!paymentKey || !orderId || !amount) {
-      msgEl.textContent = '결제 정보가 없습니다.';
+      msgEl.textContent = 'Missing payment information.';
       return;
     }
 
@@ -39,18 +39,18 @@
       .then(function (res) { return res.json(); })
       .then(function (data) {
         if (data.success) {
-          msgEl.textContent = '결제가 완료되었습니다! 예약이 확정되었어요.';
+          msgEl.textContent = 'Payment complete! Your booking is confirmed.';
           summaryEl.hidden = false;
           summaryEl.innerHTML =
-            '<p class="booking-price-label">예약 정보</p>' +
-            '<p class="booking-price-idr">' + (TYPE_LABEL[type] || type) + ' · ' + headcount + '명</p>' +
+            '<p class="booking-price-label">Booking Details</p>' +
+            '<p class="booking-price-idr">' + (TYPE_LABEL[type] || type) + ' · ' + headcount + (headcount === '1' ? ' person' : ' people') + '</p>' +
             '<p class="booking-price-krw">' + date + ' ' + time + ' · ' + spot + '</p>';
         } else {
-          msgEl.textContent = '결제 승인 실패: ' + (data.error || '알 수 없는 오류');
+          msgEl.textContent = 'Payment confirmation failed: ' + (data.error || 'Unknown error');
         }
       })
       .catch(function () {
-        msgEl.textContent = '결제 확인 중 오류가 발생했습니다.';
+        msgEl.textContent = 'An error occurred while confirming payment.';
       });
   });
 })();
