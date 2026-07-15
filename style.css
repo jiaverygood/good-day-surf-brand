@@ -309,6 +309,23 @@ body {
 
 /* ---------- 예약 결제 (booking.html) ---------- */
 
+.booking-card {
+  max-width: 400px;
+}
+
+.booking-field {
+  width: 100%;
+  text-align: left;
+}
+
+.booking-label {
+  display: block;
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--neutral-400);
+}
+
 .booking-price-box {
   width: 100%;
   padding: var(--space-md);

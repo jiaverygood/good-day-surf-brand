@@ -17,16 +17,18 @@ module.exports = async function handler(req, res) {
   var paymentKey = body.paymentKey;
   var orderId = body.orderId;
   var amount = Number(body.amount);
+  var type = body.type;
+  var headcount = body.headcount;
 
-  if (!paymentKey || !orderId || !amount) {
+  if (!paymentKey || !orderId || !amount || !quote.LESSON_PRICES_IDR[type]) {
     res.status(400).json({ error: '필수 결제 정보가 없습니다.' });
     return;
   }
 
   try {
-    // 클라이언트가 보낸 금액이 조작되지 않았는지, 방금 견적낸 환율 기준 금액과 비교해 검증한다.
+    // 클라이언트가 보낸 금액이 조작되지 않았는지, 방금 견적낸 환율/레슨 종류/인원 기준 금액과 비교해 검증한다.
     var rate = await quote.fetchRate();
-    var expected = Math.round((quote.LESSON_PRICE_IDR * rate) / 100) * 100;
+    var expected = quote.computeAmountKRW(type, headcount, rate);
     var diffRatio = Math.abs(amount - expected) / expected;
     if (diffRatio > 0.1) {
       res.status(400).json({ error: '결제 금액이 올바르지 않습니다.' });

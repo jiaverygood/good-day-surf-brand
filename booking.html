@@ -3,25 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Good Day Surf Bali — 레슨 예약 결제</title>
+<title>Good Day Surf Bali — 서핑 레슨 예약</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="auth-gate">
-    <div class="auth-card">
+    <div class="auth-card booking-card">
       <img class="brand-badge auth-badge" src="logo1.png" alt="Good Day Surf logo">
       <p class="brand-name">Good Day Surf Bali</p>
-      <p class="auth-desc">서핑 레슨 예약 결제</p>
+      <p class="auth-desc">서핑 레슨 예약</p>
 
-      <div class="booking-price-box">
-        <p class="booking-price-label">레슨 요금 (1회)</p>
-        <p class="booking-price-idr">Rp 300,000</p>
-        <p class="booking-price-krw" id="price-krw">환율 조회 중...</p>
+      <div class="booking-field">
+        <label class="booking-label" for="lesson-type">레슨 종류</label>
+        <select id="lesson-type" class="booking-input">
+          <option value="Group">그룹 레슨 (Rp 200,000 / 인)</option>
+          <option value="Private">프라이빗 레슨 (Rp 300,000 / 인)</option>
+        </select>
       </div>
 
-      <input id="customer-name" class="booking-input" type="text" placeholder="이름" autocomplete="name">
-      <input id="customer-phone" class="booking-input" type="tel" placeholder="연락처" autocomplete="tel">
+      <div class="booking-field">
+        <label class="booking-label" for="lesson-date">날짜</label>
+        <input id="lesson-date" class="booking-input" type="date">
+      </div>
+
+      <div class="booking-field">
+        <label class="booking-label" for="lesson-time">시간</label>
+        <select id="lesson-time" class="booking-input">
+          <option value="07:00">07:00</option>
+          <option value="09:00">09:00</option>
+          <option value="11:00">11:00</option>
+          <option value="14:00">14:00</option>
+          <option value="16:00">16:00</option>
+        </select>
+      </div>
+
+      <div class="booking-field">
+        <label class="booking-label" for="lesson-spot">장소</label>
+        <select id="lesson-spot" class="booking-input">
+          <option value="Kuta Beach">Kuta Beach</option>
+          <option value="Legian Beach">Legian Beach</option>
+          <option value="Double Six">Double Six</option>
+        </select>
+      </div>
+
+      <div class="booking-field">
+        <label class="booking-label" for="lesson-headcount">인원</label>
+        <select id="lesson-headcount" class="booking-input">
+          <option value="1">1명</option>
+          <option value="2">2명</option>
+          <option value="3">3명</option>
+          <option value="4">4명</option>
+        </select>
+      </div>
+
+      <div class="booking-field">
+        <label class="booking-label" for="customer-name">이름</label>
+        <input id="customer-name" class="booking-input" type="text" autocomplete="name">
+      </div>
+
+      <div class="booking-field">
+        <label class="booking-label" for="customer-phone">연락처</label>
+        <input id="customer-phone" class="booking-input" type="tel" autocomplete="tel">
+      </div>
+
+      <div class="booking-price-box">
+        <p class="booking-price-label">결제 금액</p>
+        <p class="booking-price-idr" id="price-idr">Rp 300,000</p>
+        <p class="booking-price-krw" id="price-krw">환율 조회 중...</p>
+      </div>
 
       <button id="pay-btn" class="auth-btn auth-btn-pay" type="button" disabled>결제하기</button>
       <p id="booking-error" class="auth-error" hidden></p>
