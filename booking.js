@@ -2,8 +2,7 @@
 (function () {
   'use strict';
 
-  // TODO: 토스페이먼츠 개발자센터에서 발급받은 테스트 클라이언트 키로 교체
-  var TOSS_CLIENT_KEY = 'TOSS_CLIENT_KEY_PLACEHOLDER';
+  var TOSS_CLIENT_KEY = 'test_ck_DLJOpm5Qrl70eZnojvwQVPNdxbWn';
 
   var quotedAmount = null;
 
