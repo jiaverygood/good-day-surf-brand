@@ -71,6 +71,9 @@
 
 * { box-sizing: border-box; }
 
+/* hidden 속성은 display:flex 같은 클래스 규칙에 밀려 무시될 수 있어 명시적으로 최우선 적용 */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   background: var(--cream-50);
