@@ -193,6 +193,7 @@ body {
   font-weight: 600;
   text-decoration: none;
   background: transparent;
+  white-space: nowrap;
   transition: background 0.2s ease;
 }
 
@@ -202,7 +203,9 @@ body {
 
 .topbar-actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--space-sm);
 }
 
